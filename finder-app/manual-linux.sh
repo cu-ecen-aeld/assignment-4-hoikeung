@@ -75,8 +75,8 @@ else
 fi
 
 # TODO: Make and install busybox
-make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
-make CONFIG_PREFIX="${OUTDIR}/rootfs" ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
+make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
+make -j4 CONFIG_PREFIX="${OUTDIR}/rootfs" ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 
 echo "Library dependencies"
 cd ${OUTDIR}/rootfs
@@ -101,12 +101,15 @@ make CROSS_COMPILE=${CROSS_COMPILE}
 
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
+cd ${FINDER_APP_DIR}
+echo "FINDER_APP_DIR = ${FINDER_APP_DIR}" 
 mkdir -p ${OUTDIR}/rootfs/home
+mkdir -p ${OUTDIR}/rootfs/home/conf
 cp ${FINDER_APP_DIR}/writer ${OUTDIR}/rootfs/home/
 cp ${FINDER_APP_DIR}/finder.sh ${OUTDIR}/rootfs/home/
 cp ${FINDER_APP_DIR}/finder-test.sh ${OUTDIR}/rootfs/home/
-cp ${FINDER_APP_DIR}/conf/username.txt ${OUTDIR}/rootfs/home/
-cp ${FINDER_APP_DIR}/conf/assignment.txt ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/conf/username.txt ${OUTDIR}/rootfs/home/conf
+cp ${FINDER_APP_DIR}/conf/assignment.txt ${OUTDIR}/rootfs/home/conf
 cp ${FINDER_APP_DIR}/autorun-qemu.sh ${OUTDIR}/rootfs/home/
 
 # TODO: Chown the root directory
